@@ -1,0 +1,6 @@
+{
+  "domain": "vue-training.us.auth0.com",
+  "client_id": "usmqRwJ6JPNB4646FjuYLVlY8sp4a9w9",
+  "redirect_uri": "https://vue-time-app2.vercel.app//callback",
+  "audience": ""
+}

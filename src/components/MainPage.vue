@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <router-link to="/login" class="log-btn">
+    <q-btn class="log-btn" @click="logout">
       <q-icon name="logout" class="log-icon" />
-    </router-link>
+    </q-btn>
     <router-link to="/statistics" class="data-btn">
       <q-icon name="bar_chart" class="data-icon" />
     </router-link>
@@ -93,9 +93,10 @@ export default {
     AddActivity,
   },
   created() {
-    if (!this.$route.params.user) {
-      this.$route.push("/login");
-    }
+    console.log(this.$auth.user.value);
+    // if (!this.$route.params.user) {
+    //   this.$route.push("/login");
+    // }
   },
   apollo: {
     activities: {
@@ -108,7 +109,7 @@ export default {
       },
       variables() {
         return {
-          userEmail: this.$route.params.user,
+          userEmail: this.$auth.user.value.email,
           date: this.currentDateFormatted(),
         };
       },
@@ -177,6 +178,11 @@ export default {
   },
 
   methods: {
+    logout() {
+      this.$auth.logout({
+        returnTo: window.location.origin,
+      });
+    },
     currentDate() {
       const current = new Date();
       const date = `${current.toLocaleDateString("en-US", {
@@ -215,7 +221,7 @@ export default {
     },
 
     addUserActivity(act) {
-      const userEmail = this.$route.params.user;
+      const userEmail = this.$auth.user.value.email;
       const date = this.currentDateFormatted();
 
       const newAct = {
@@ -317,7 +323,7 @@ export default {
     updateUserActivity(actId, startTime, endTime) {
       // Call to the graphql mutation
 
-      const userEmail = this.$route.params.user;
+      const userEmail = this.$auth.user.value.email;
       const date = this.currentDateFormatted();
 
       this.$apollo

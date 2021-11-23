@@ -8,6 +8,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import MainPage from "./components/MainPage.vue";
 import Login from "./components/Login.vue";
 import Statistics from "./components/Statistics.vue";
+import authConfig from "../auth_config.json";
+import { setupAuth } from "./auth";
+import Callback from "./components/Callback";
+import ErrorPage from "./components/Error";
+
+import { routeGuard } from "@/auth";
 
 const cache = new InMemoryCache();
 
@@ -27,14 +33,9 @@ const apolloProvider = createApolloProvider({
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", redirect: "/login" },
+    { path: "/", name: "home", component: MainPage, beforeEnter: routeGuard },
     { path: "/:catchAll(.*)", redirect: "/login" },
-    {
-      path: "/home/:user",
-      name: "home",
-      component: MainPage,
-      props: (route) => ({ ...route.params }),
-    },
+
     { path: "/login", component: Login },
     {
       path: "/statistics",
@@ -42,11 +43,27 @@ const router = createRouter({
       component: Statistics,
       props: (route) => ({ ...route.params }),
     },
+    {
+      path: "/callback",
+      name: "Callback",
+      component: Callback,
+    },
+    {
+      path: "/error",
+      name: "Error",
+      component: ErrorPage,
+    },
   ],
 });
 
-createApp(App)
+let app = createApp(App)
   .use(router)
   .use(Quasar, quasarUserOptions)
-  .use(apolloProvider)
-  .mount("#app");
+  .use(apolloProvider);
+
+function callbackRedirect() {
+  router.push("/");
+}
+setupAuth(authConfig, callbackRedirect).then((auth) => {
+  app.use(auth).mount("#app");
+});
