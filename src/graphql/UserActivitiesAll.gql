@@ -1,0 +1,12 @@
+query userActivities($userEmail: String!, $date: date!) {
+  userActivities: timeTracker_userActivity(
+    where: { userEmail: { _eq: $userEmail }, _and: { date: { _eq: $date } } }
+  ) {
+    activityId
+    date
+    endTime
+    id
+    startTime
+    userEmail
+  }
+}

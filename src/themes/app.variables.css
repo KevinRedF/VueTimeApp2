@@ -1,0 +1,14 @@
+@font-face{
+    font-family: WTGothic;
+    src: url(./fonts/WTGothic-Regular.woff)
+}
+
+@font-face{
+    font-family: WTGothic-Bold;
+    src: url(./fonts/WTGothic-Bold.woff)
+}
+
+@font-face{
+    font-family: WTGothic-Medium;
+    src: url(./fonts/WTGothic-Medium.woff)
+}

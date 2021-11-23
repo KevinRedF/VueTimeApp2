@@ -1,0 +1,8 @@
+query activities {
+  activities: timeTracker_activity {
+    description
+    icon
+    id
+    name
+  }
+}
